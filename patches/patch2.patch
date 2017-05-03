@@ -1,0 +1,42 @@
+MDVA-2886 |  | v1 | 5c58ae0f0a85ad5e608c27e0e6f39ce5ecc146ac | Fri Jan 20 14:40:09 2017 -0800 | c33e292a4eed380bc0da2a0d4af4cc7295b580c7..5c58ae0f0a85ad5e608c27e0e6f39ce5ecc146ac
+
+__PATCHFILE_FOLLOWS__
+diff --git vendor/magento/module-catalog-inventory/Ui/DataProvider/Product/Form/Modifier/AdvancedInventory.php vendor/magento/module-catalog-inventory/Ui/DataProvider/Product/Form/Modifier/AdvancedInventory.php
+index 38032a1..546483a 100644
+--- Ui/DataProvider/Product/Form/Modifier/AdvancedInventory.php
++++ Ui/DataProvider/Product/Form/Modifier/AdvancedInventory.php
+@@ -213,7 +213,6 @@ class AdvancedInventory extends AbstractModifier
+                 'dataScope' => 'qty',
+                 'validation' => [
+                     'validate-number' => true,
+-                    'validate-digits' => true,
+                     'less-than-equals-to' => StockDataFilter::MAX_QTY_VALUE,
+                 ],
+                 'imports' => [
+diff --git vendor/magento/module-catalog-inventory/view/adminhtml/ui_component/product_form.xml vendor/magento/module-catalog-inventory/view/adminhtml/ui_component/product_form.xml
+index d7de033..362aac7 100644
+--- view/adminhtml/ui_component/product_form.xml
++++ view/adminhtml/ui_component/product_form.xml
+@@ -95,7 +95,6 @@
+                         <item name="dataScope" xsi:type="string">quantity_and_stock_status.qty</item>
+                         <item name="validation" xsi:type="array">
+                             <item name="validate-number" xsi:type="boolean">true</item>
+-                            <item name="validate-digits" xsi:type="boolean">true</item>
+                             <item name="less-than-equals-to" xsi:type="number">99999999</item>
+                         </item>
+                         <item name="sortOrder" xsi:type="number">200</item>
+diff --git vendor/magento/module-catalog-inventory/view/adminhtml/web/js/components/qty-validator-changer.js vendor/magento/module-catalog-inventory/view/adminhtml/web/js/components/qty-validator-changer.js
+index b14527c..f45d32d 100644
+--- view/adminhtml/web/js/components/qty-validator-changer.js
++++ view/adminhtml/web/js/components/qty-validator-changer.js
+@@ -19,8 +19,7 @@ define([
+         handleChanges: function (value) {
+             var isDigits = value !== 1;
+
+-            this.validation['validate-number'] = !isDigits;
+-            this.validation['validate-digits'] = isDigits;
++            this.validation['validate-integer'] = isDigits;
+             this.validation['less-than-equals-to'] = isDigits ? 99999999 : 99999999.9999;
+             this.validate();
+         }
+
